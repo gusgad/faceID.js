@@ -140,6 +140,11 @@ p.lead {
     line-height: 1.8;
 }
 
+.btn-save {
+    background-image: linear-gradient( 122deg, #20c1f1 0%, #e3fd37 100%);
+    transition: all 0.3s ease-out;
+}
+
 .btn-group-lg>.btn,
 .btn-lg {
     padding: 0.8rem 1rem;
@@ -391,6 +396,11 @@ header {
     .perspective-phone {
         margin-top: -150px;
     }
+}
+
+.filepond--root {
+    width: 253px;
+    cursor: pointer;
 }
 
 

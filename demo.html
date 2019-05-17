@@ -24,6 +24,8 @@ URI     : https://colorlib.com
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css">
+  <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
   <!-- Themify Icons -->
   <link rel="stylesheet" href="css/themify-icons.css">
   <!-- Main css -->
@@ -31,6 +33,21 @@ URI     : https://colorlib.com
 </head>
 
 <body data-spy="scroll" data-target="#navbar" data-offset="30">
+  <!--DEMO01-->
+  <div id="animatedModal">
+    <!--THIS IS IMPORTANT! to close the modal, the class name has to match the name given on the ID  class="close-animatedModal" -->
+    <div class="close-animatedModal">
+      CLOSE MODAL
+    </div>
+  
+    <div class="modal-content">
+      <!--Your modal content goes here-->
+      <div id="my_camera" style="width:320px; height:240px;"></div>
+      <div id="my_result"></div>
+      
+      <a id="take-snapshot">Take Snapshot</a>
+    </div>
+  </div>
 
   <!-- Nav Menu -->
 
@@ -45,10 +62,10 @@ URI     : https://colorlib.com
                 class="navbar-toggler-icon"></span> </button>
             <div class="collapse menu-is-open navbar-collapse" id="navbar">
               <ul class="navbar-nav ml-auto">
-                <li class="nav-item"> <a class="nav-link active" href="#home">HOME <span
+                <li class="nav-item"> <a class="nav-link" href="index.html">HOME <span
                       class="sr-only">(current)</span></a> </li>
-                <li class="nav-item"> <a class="nav-link" href="#try-it-out">TRY IT OUT</a> </li>
-                <li class="nav-item"> <a class="nav-link" href="#how">HOW IT WORKS</a> </li>
+                <li class="nav-item"> <a class="nav-link active">DEMO 
+                  <span class="sr-only">(current)</span></a> </li>
                 <li class="nav-item"> <a class="nav-link" href="https://github.com/gusgad/faceID.js"
                     target="_blank">GITHUB</a> </li>
               </ul>
@@ -59,41 +76,73 @@ URI     : https://colorlib.com
     </div>
   </div>
 
-  <!-- TRY IT OUT -->
-  <div class="section mt-5" id="try-it-out">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 offset-lg-6">
-          <h2 class="mt-4">Try it Out</h2>
-          <p class="mb-4">We will demonstrate user identification based on the previous data (username, photo) that is
-            given upon registration.</p>
-          <a href="/demo.html" class="btn btn-primary">Jump to demo</a>
+  <!-- HOW -->
+  <div class="section mt-5" id="user-data-form">
+    <form class="container">
+      <div class="row pt-4">
+        <div class="col-md-4">
+          <div class="form-group">
+            <h4 class="mb-0">1. Username</h4>
+            <p class="light-font mb-1">Let's choose a username that we will be checking the photo against.</p>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+              placeholder="pablodiscobar49">
+          </div>
         </div>
+        <div class="col-md-4">
+          <h4 class="mb-0">2. Photo</h4>
+          <p class="light-font mb-1">Take a snapshot or upload a photo that will be associated with your username upon logging in.</p>
+          <!--Call your modal-->
+          <a id="openCameraModal" href="#animatedModal" class="btn btn-primary  mb-3" role="button" aria-pressed="true">Take a snapshot (preferred)</a>
+          <!-- We'll transform this input into a pond -->
+          <input id="uploadPhoto" type="file" class="filepond">
+        </div>
+        <div class="col-md-4">
+          <h4 class="mb-0">3. Save the user</h4>
+          <p class="light-font mb-1">Save the user to the imaginary database and follow the next steps.
+          </p>
+          <button type="button" class="btn btn-save btn-primary btn-lg btn-block">Save</button> 
+        </div>
+        
       </div>
-      <div class="perspective-phone">
-        <img src="images/perspective.png" alt="perspective phone" class="img-fluid">
-      </div>
-    </div>
+    </form>
   </div>
-  <!-- END -- TRY IT OUT -->
+  <!-- END -- HOW -->
 
-  <!-- TRY IT OUT -->
-  <div class="section" id="try-it-out">
+  <!-- HOW -->
+  <div class="section pt-0" id="how">
     <div class="container">
-      <div class="row">
-        <div class="col-lg-6 offset-lg-6">
-          <h2 class="mt-4">Try it Out</h2>
-          <p class="mb-4">We will demonstrate user identification based on the previous data (username, photo) that is
-            given upon registration.</p>
-          <a href="/demo.html" class="btn btn-primary">Jump to demo</a>
-        </div>
+      <div class="section-title">
+        <small>FAQ</small>
+        <h3>Frequently Asked Questions</h3>
       </div>
-      <div class="perspective-phone">
-        <img src="images/perspective.png" alt="perspective phone" class="img-fluid">
+  
+      <div class="row pt-4">
+        <div class="col-md-6">
+          <h4 class="mb-3">Can I try before I buy?</h4>
+          <p class="light-font mb-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rutrum, urna eu
+            pellentesque pretium, nisi nisi fermentum enim, et sagittis dolor nulla vel sapien. Vestibulum sit amet mattis
+            ante. </p>
+          <h4 class="mb-3">What payment methods do you accept?</h4>
+          <p class="light-font mb-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rutrum, urna eu
+            pellentesque pretium, nisi nisi fermentum enim, et sagittis dolor nulla vel sapien. Vestibulum sit amet mattis
+            ante. </p>
+  
+        </div>
+        <div class="col-md-6">
+          <h4 class="mb-3">Can I change my plan later?</h4>
+          <p class="light-font mb-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rutrum, urna eu
+            pellentesque pretium, nisi nisi fermentum enim, et sagittis dolor nulla vel sapien. Vestibulum sit amet mattis
+            ante. </p>
+          <h4 class="mb-3">Do you have a contract?</h4>
+          <p class="light-font mb-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rutrum, urna eu
+            pellentesque pretium, nisi nisi fermentum enim, et sagittis dolor nulla vel sapien. Vestibulum sit amet mattis
+            ante. </p>
+  
+        </div>
       </div>
     </div>
   </div>
-  <!-- END -- TRY IT OUT -->
+  <!-- END -- HOW -->
 
   <footer class="my-5 text-center">
     <!-- Copyright removal is not prohibited! -->
@@ -102,11 +151,15 @@ URI     : https://colorlib.com
   </footer>
 
   <!-- jQuery and Bootstrap -->
-  <script src="js/jquery-3.2.1.min.js"></script>
-  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
+  <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+  <script src="./js/animatedModal.min.js"></script>
   <!-- Custom JS -->
-  <script src="js/script.js"></script>
-
+  <script src="js/script-demo.js"></script>
 </body>
 
 </html>
