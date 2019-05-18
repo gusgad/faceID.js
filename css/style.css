@@ -1,17 +1,5 @@
 @charset "UTF-8";
 
-/*
-
-Style   : MobApp CSS
-Version : 1.0
-Author  : Surjith S M
-URI     : https://surjithctly.in/
-
-Copyright © All rights Reserved 
-
-*/
-
-
 /*------------------------
 [TABLE OF CONTENTS]
     
@@ -390,6 +378,11 @@ header {
 .perspective-phone {
     position: relative;
     z-index: -1;
+}
+
+#animatedModal {
+    background: linear-gradient(135deg, rgb(74, 13, 143) 0%, rgb(250, 42, 143) 100%);
+    background-color: rgb(74, 13, 143);
 }
 
 @media (min-width:992px) {
