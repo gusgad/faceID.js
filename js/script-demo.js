@@ -80,6 +80,9 @@ $(function () {
   * INITIALIZE THE WEBCAM
   *-----------------------------------*/
   Webcam.attach('#my_camera');
+  Webcam.on('error', function (err) {
+    console.log('Webcam error:', err)
+  });
   var take_snapshot = document.getElementById('take-snapshot').addEventListener('click', take_snapshot)
 
   function take_snapshot() {
@@ -88,8 +91,14 @@ $(function () {
     });
   }
 
+  /*-----------------------------------
+  * INITIALIZE THE ANIMATED WEBCAM MODAL
+  *-----------------------------------*/
   $("#openCameraModal").animatedModal({ animatedIn: 'lightSpeedIn', animatedOut: 'bounceOutDown'});
 
+  /*-----------------------------------
+  * INITIALIZE THE FILE UPLOADER
+  *-----------------------------------*/
   FilePond.parse(document.body);
 
   $('#uploadPhoto').on('FilePond:addfile', function (e) {

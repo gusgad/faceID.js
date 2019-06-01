@@ -15,6 +15,7 @@
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500" rel="stylesheet">
 
     <!-- 3rd party CSS -->
+    <link rel="stylesheet" href="https://icono-49d6.kxcdn.com/icono.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css">
@@ -30,14 +31,14 @@
     <div id="animatedModal">
       <!--THIS IS IMPORTANT! to close the modal, the class name has to match the name given on the ID  class="close-animatedModal" -->
       <div class="close-animatedModal">
-        CLOSE MODAL
+        <button><i class="icono-cross"></i></button>
       </div>
     
       <div class="modal-content">
-        <div id="my_camera" style="width:320px; height:240px;"></div>
+        <div id="my_camera" style="width:320px; height:240px; margin-bottom: 10px;"></div>
+
+        <a id="take-snapshot" class="btn btn-primary" role="button" aria-pressed="true">Take A Snapshot</a>
         <div id="my_result"></div>
-        
-        <a id="take-snapshot">Take Snapshot</a>
       </div>
     </div>
 
@@ -99,41 +100,19 @@
     </div>
     <!-- END -- USER DATA FORM -->
 
-    <!-- HOW -->
-    <div class="section pt-0" id="how">
+    <!-- PROCESSING -->
+    <div class="section pt-0" id="processing">
       <div class="container">
         <div class="section-title">
-          <small>FAQ</small>
-          <h3>Frequently Asked Questions</h3>
+          <h3>Processing</h3>
         </div>
-    
         <div class="row pt-4">
-          <div class="col-md-6">
-            <h4 class="mb-3">Can I try before I buy?</h4>
-            <p class="light-font mb-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rutrum, urna eu
-              pellentesque pretium, nisi nisi fermentum enim, et sagittis dolor nulla vel sapien. Vestibulum sit amet mattis
-              ante. </p>
-            <h4 class="mb-3">What payment methods do you accept?</h4>
-            <p class="light-font mb-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rutrum, urna eu
-              pellentesque pretium, nisi nisi fermentum enim, et sagittis dolor nulla vel sapien. Vestibulum sit amet mattis
-              ante. </p>
-    
-          </div>
-          <div class="col-md-6">
-            <h4 class="mb-3">Can I change my plan later?</h4>
-            <p class="light-font mb-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rutrum, urna eu
-              pellentesque pretium, nisi nisi fermentum enim, et sagittis dolor nulla vel sapien. Vestibulum sit amet mattis
-              ante. </p>
-            <h4 class="mb-3">Do you have a contract?</h4>
-            <p class="light-font mb-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rutrum, urna eu
-              pellentesque pretium, nisi nisi fermentum enim, et sagittis dolor nulla vel sapien. Vestibulum sit amet mattis
-              ante. </p>
-    
-          </div>
+          
+          <div class="loader">Loading...</div>
         </div>
       </div>
     </div>
-    <!-- END -- HOW -->
+    <!-- END -- PROCESSING -->
 
     <footer class="my-5 text-center">
       <!-- Copyright removal is not prohibited! -->
