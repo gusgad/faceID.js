@@ -1,6 +1,9 @@
 $(function () {
   "use strict";
 
+  $('.associated-photo').hide();
+  $('#processing').hide();
+
   /*-----------------------------------
    * FIXED  MENU - HEADER
    *-----------------------------------*/
@@ -79,6 +82,11 @@ $(function () {
   /*-----------------------------------
   * INITIALIZE THE WEBCAM
   *-----------------------------------*/
+  Webcam.set({
+    image_format: 'jpeg',
+    jpeg_quality: 100,
+    fps: 60
+  });
   Webcam.attach('#my_camera');
   Webcam.on('error', function (err) {
     console.log('Webcam error:', err)
@@ -88,6 +96,10 @@ $(function () {
   function take_snapshot() {
     Webcam.snap(function (data_uri) {
       document.getElementById('my_result').innerHTML = '<img src="' + data_uri + '"/>';
+      document.getElementById('animatedModal').remove();
+      document.getElementById('body').style.overflow = 'auto';
+      document.getElementsByTagName('html')[0].style.overflow = 'auto';
+      $('.associated-photo').show();
     });
   }
 
@@ -104,4 +116,23 @@ $(function () {
   $('#uploadPhoto').on('FilePond:addfile', function (e) {
     console.log('file added event', e);
   });
+
+  /*-----------------------------------
+  * INITIALIZE THE FILE UPLOADER
+  *-----------------------------------*/
+ faceapi.nets.ssdMobilenetv1.loadFromUri('../weights').then(function(modelLoadRes) {
+  faceapi.nets.faceLandmark68Net.loadFromUri('../weights').then(function(modelLoadRes) {
+    console.log(modelLoadRes)
+    $('.btn-save').click(function() {
+      var savedImage = document.getElementById('my_result').firstChild
+      faceapi.detectAllFaces(savedImage).withFaceLandmarks().then(function(res) {
+        console.log(res)
+      });
+    });
+  });
+ });
+
+  
+  
+  
 });
