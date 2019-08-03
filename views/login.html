@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css">
-    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
     <!-- Themify Icons -->
     <link rel="stylesheet" href="../css/themify-icons.css">
     <!-- Main css -->
@@ -27,22 +26,9 @@
   </head>
 
   <body id="body" data-spy="scroll" data-target="#navbar" data-offset="30">
-    <!-- SNAPSHOT MODAL-->
-    <div id="animatedModal">
-      <!--THIS IS IMPORTANT! to close the modal, the class name has to match the name given on the ID  class="close-animatedModal" -->
-      <div class="close-animatedModal">
-        <button><i class="icono-cross"></i></button>
-      </div>
-    
-      <div class="modal-content">
-        <div id="my_camera"></div>
-
-        <a id="take-snapshot" class="btn btn-primary" role="button" aria-pressed="true">Take A Snapshot</a>
-      </div>
-    </div>
 
     <!-- NAV -->
-    <div class="nav-menu menu-is-open fixed-top">
+    <div class="nav-menu menu-is-open fixed-top is-scrolling">
       <div class="container">
         <div class="row">
           <div class="col-md-12">
@@ -67,38 +53,11 @@
       </div>
     </div>
 
-    <!-- USER DATA FORM -->
-    <div class="section mt-5" id="user-data-form">
-      <form class="container">
-        <div class="row pt-4">
-          <div class="col-md-4">
-            <div class="form-group">
-              <h4 class="mb-0">1. Username</h4>
-              <p class="light-font mb-1">Let's choose a username that we will be checking the photo against.</p>
-              <input type="text" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp"
-                placeholder="pablodiscobar49">
-            </div>
-          </div>
-          <div class="col-md-4">
-            <h4 class="mb-0">2. Photo</h4>
-            <p class="light-font mb-1">Take a snapshot or upload a photo that will be associated with your username upon logging in.</p>
-            <!--Call your modal-->
-            <a id="openCameraModal" href="#animatedModal" class="btn btn-primary  mb-3" role="button" aria-pressed="true">Take a snapshot (preferred)</a>
-            <!-- We'll transform this input into a pond -->
-            <input id="uploadPhoto" type="file" class="filepond">
-            <p class="light-font mb-1 associated-photo">Photo to be associated:</p>
-            <div id="my_result"></div>
-          </div>
-          <div class="col-md-4">
-            <h4 class="mb-0">3. Save the user</h4>
-            <p class="light-font mb-1">Save the user to the imaginary database and follow the next steps.
-            </p>
-            <button id="save-and-process" type="button" class="btn btn-save btn-primary btn-lg btn-block" disabled>Save</button> 
-          </div>
-        </div>
-      </form>
+    <div class="camera-window">
+      <div id="my_camera"></div>
+      <a id="take-snapshot" class="btn btn-primary" role="button" aria-pressed="true">Find my login username</a>
+      <div id="my_result"></div>
     </div>
-    <!-- END -- USER DATA FORM -->
 
     <!-- PROCESSING -->
     <div class="section pt-0" id="processing">
@@ -115,12 +74,13 @@
     <!-- END -- PROCESSING -->
 
     <!-- SUCCESS -->
-    <div class="section pt-0" id="success">
+    <div class="section pt-0" id="your-username">
       <div class="container">
         <div class="section-title">
-          <h3>Success</h3>
+          <h3>Your username is found,</h3>
+          <h3 id="your-username-text"></h3>
         </div>
-        <p style="text-align: center" class="light-font mb-1">Please, head to the <a href="./login.html" target="_blank">Login</a> page to authenticate with your photo! &#x1F609;</p>
+        <p style="text-align: center" class="light-font mb-1">You can now use it with your password in order to log in.</p>
       </div>
     </div>
     <!-- END -- PROCESSING -->
@@ -137,11 +97,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
-    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
-    <script src="../js/animatedModal.min.js"></script>
     <script src="../js/face-api.min.js"></script>
     <!-- Custom JS -->
-    <script src="../js/script-demo.js"></script>
+    <script src="../js/script-login.js"></script>
   </body>
 
 </html>

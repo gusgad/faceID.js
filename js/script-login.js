@@ -1,25 +1,10 @@
 $(function () {
   "use strict";
 
-  $('.associated-photo').hide();
   $('#processing').hide();
-  $('#success').hide();
+  $('#your-username').hide();
 
-  /*-----------------------------------
-   * FIXED  MENU - HEADER
-   *-----------------------------------*/
-  function menuscroll() {
-    var $navmenu = $('.nav-menu');
-    if ($(window).scrollTop() > 50) {
-      $navmenu.addClass('is-scrolling');
-    } else {
-      $navmenu.removeClass("is-scrolling");
-    }
-  }
-  menuscroll();
-  $(window).on('scroll', function () {
-    menuscroll();
-  });
+
   /*-----------------------------------
    * NAVBAR CLOSE ON CLICK
    *-----------------------------------*/
@@ -81,68 +66,65 @@ $(function () {
 
 
   /*-----------------------------------
-  * INITIALIZE THE ANIMATED WEBCAM MODAL
+  * INITIALIZE THE WEBCAM
   *-----------------------------------*/
-  $("#openCameraModal").animatedModal({ animatedIn: 'lightSpeedIn', animatedOut: 'bounceOutDown'});
-  $("#openCameraModal").click(function() {
-    /*-----------------------------------
-    * INITIALIZE THE WEBCAM
-    *-----------------------------------*/
-    Webcam.set({
-      image_format: 'jpeg',
-      jpeg_quality: 100,
-      fps: 60
-    });
-    Webcam.attach('#my_camera');
-    Webcam.on('error', function (err) {
-      console.log('Webcam error:', err)
-    });
-    var take_snapshot = document.getElementById('take-snapshot').addEventListener('click', take_snapshot)
-
-    function take_snapshot() {
-      Webcam.snap(function (data_uri) {
-        document.getElementById('my_result').innerHTML = '<img src="' + data_uri + '"/>';
-        document.getElementById('animatedModal').remove();
-        document.getElementById('body').style.overflow = 'auto';
-        document.getElementsByTagName('html')[0].style.overflow = 'auto';
-        $('.associated-photo').show();
-        $('#save-and-process').prop('disabled', false);
-      });
-    }
+  Webcam.set({
+    image_format: 'jpeg',
+    jpeg_quality: 100,
+    fps: 60
   });
-
-  /*-----------------------------------
-  * INITIALIZE THE FILE UPLOADER
-  *-----------------------------------*/
-  FilePond.parse(document.body);
-
-  $('#uploadPhoto').on('FilePond:addfile', function (e) {
-    console.log('file added event', e);
+  Webcam.attach('#my_camera');
+  Webcam.on('error', function (err) {
+    console.log('Webcam error:', err)
   });
+  var take_snapshot = document.getElementById('take-snapshot').addEventListener('click', take_snapshot)
+
+  function take_snapshot() {
+    Webcam.snap(function (data_uri) {
+      document.getElementById('my_result').innerHTML = '<img src="' + data_uri + '"/>';
+      document.getElementById('body').style.overflow = 'auto';
+      document.getElementsByTagName('html')[0].style.overflow = 'auto';
+    });
+  }
 
   /*-----------------------------------
   *   LOAD THE WEIGHTS
   *-----------------------------------*/
- faceapi.nets.ssdMobilenetv1.loadFromUri('../weights').then(function(modelLoadRes) {
-  faceapi.nets.faceLandmark68Net.loadFromUri('../weights').then(function(modelLoadRes) {
-    faceapi.nets.faceRecognitionNet.loadFromUri('../weights').then(function(modelLoadRes) {
-      console.log(modelLoadRes)
+  faceapi.nets.ssdMobilenetv1.loadFromUri('../weights').then(function(modelLoadRes) {
+    faceapi.nets.faceLandmark68Net.loadFromUri('../weights').then(function(modelLoadRes) {
+      faceapi.nets.faceRecognitionNet.loadFromUri('../weights').then(function(modelLoadRes) {
+        console.info('Models and weights are loaded.')
+      });
     });
   });
-});
 
- /*-----------------------------------
+  /*-----------------------------------
   * START PROCESSING AFTER SAVE
   *-----------------------------------*/
-  $('#save-and-process').click(function() {
-    console.log('CLICK PROCESSING')
+  $('#take-snapshot').click(function() {
     $('#processing').show();
     var savedImage = document.getElementById('my_result').firstChild
     faceapi.detectAllFaces(savedImage).withFaceLandmarks().withFaceDescriptors().then(function(res) {
-      console.log(res)
-      sessionStorage.setItem('userCreds=' + $('#exampleInputEmail').val(), JSON.stringify({username: $('#exampleInputEmail').val(), data: res}));
+      console.log('res', res)
+      var faceDataFromDB = JSON.parse(sessionStorage.getItem('userCreds=pablo'));
+      console.log('faceDataFromDB', faceDataFromDB);
+      faceDataFromDB['data'][0]['descriptor'] = new Float32Array(Object.values(faceDataFromDB['data'][0]['descriptor']));
+      
+      const labeledDescriptors = [
+        new faceapi.LabeledFaceDescriptors(
+          faceDataFromDB['username'],
+          [faceDataFromDB['data'][0]['descriptor']]
+        )
+      ]
+      var faceMatcher = new faceapi.FaceMatcher(labeledDescriptors)
+      console.log('faceMatcher', faceMatcher)
+      var bestMatch = faceMatcher.findBestMatch(res[0]['descriptor'])
+
+
+      console.log(bestMatch)
       $('#processing').hide();
-      $('#success').show();
+      $('#your-username').show();
+      $('#your-username-text').text(bestMatch['label'] + '!');
     });
   });
   

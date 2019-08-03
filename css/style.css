@@ -389,6 +389,28 @@ header {
     background-color: rgb(74, 13, 143);
 }
 
+.camera-window {
+    height: 90vh;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, rgb(74, 13, 143) 0%, rgb(250, 42, 143) 100%);
+    background-color: rgb(74, 13, 143);
+}
+
+.camera-window #my_camera {
+    width: 480px;
+    height: 480px;
+}
+
+.camera-window #my_result {
+    display: none;
+}
+
+
 @media (min-width:992px) {
     .perspective-phone {
         margin-top: -150px;
