@@ -98,24 +98,37 @@ $(function () {
     });
   });
 
+  function allStorage() {
+    var values = Object.assign({}, sessionStorage)
+    
+    return values;
+  };
+
   /*-----------------------------------
   * START PROCESSING AFTER SAVE
   *-----------------------------------*/
   $('#take-snapshot').click(function() {
+    var storageKeys = allStorage();
+
     $('#processing').show();
     var savedImage = document.getElementById('my_result').firstChild
     faceapi.detectAllFaces(savedImage).withFaceLandmarks().withFaceDescriptors().then(function(res) {
-      console.log('res', res)
-      var faceDataFromDB = JSON.parse(sessionStorage.getItem('userCreds=pablo'));
-      console.log('faceDataFromDB', faceDataFromDB);
-      faceDataFromDB['data'][0]['descriptor'] = new Float32Array(Object.values(faceDataFromDB['data'][0]['descriptor']));
-      
-      const labeledDescriptors = [
-        new faceapi.LabeledFaceDescriptors(
-          faceDataFromDB['username'],
-          [faceDataFromDB['data'][0]['descriptor']]
-        )
-      ]
+      const labeledDescriptors = Object.values(storageKeys)
+      .filter(function(storageKey) {
+        storageKey = JSON.parse(storageKey);
+        if (storageKey.hasOwnProperty('username') && storageKey.hasOwnProperty('data')) {
+          return true;
+        }
+      })
+      .map(function(storageKey) {
+        storageKey = JSON.parse(storageKey);
+        var descriptor = new Float32Array(Object.values(storageKey['data'][0]['descriptor']));
+        return new faceapi.LabeledFaceDescriptors(
+          storageKey['username'],
+          [descriptor]
+        );
+      });
+            
       var faceMatcher = new faceapi.FaceMatcher(labeledDescriptors)
       console.log('faceMatcher', faceMatcher)
       var bestMatch = faceMatcher.findBestMatch(res[0]['descriptor'])

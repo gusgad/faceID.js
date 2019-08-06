@@ -131,6 +131,16 @@ $(function () {
   });
 });
 
+function makeid(length) {
+  var result = '';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
  /*-----------------------------------
   * START PROCESSING AFTER SAVE
   *-----------------------------------*/
@@ -140,7 +150,7 @@ $(function () {
     var savedImage = document.getElementById('my_result').firstChild
     faceapi.detectAllFaces(savedImage).withFaceLandmarks().withFaceDescriptors().then(function(res) {
       console.log(res)
-      sessionStorage.setItem('userCreds=' + $('#exampleInputEmail').val(), JSON.stringify({username: $('#exampleInputEmail').val(), data: res}));
+      sessionStorage.setItem('userID=' + makeid(5), JSON.stringify({username: $('#exampleInputEmail').val(), data: res}));
       $('#processing').hide();
       $('#success').show();
     });
