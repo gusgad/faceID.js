@@ -137,6 +137,11 @@ input.form-control::placeholder {
     transition: all 0.3s ease-out;
 }
 
+#save-and-process.disabled {
+    cursor: not-allowed;
+    opacity: 0.2;
+}
+
 .btn-group-lg>.btn,
 .btn-lg {
     padding: 0.8rem 1rem;
@@ -491,6 +496,11 @@ header {
     }
 }
 
+.username-req, .photo-req {
+    color: red;
+    font-size: 14px;
+}
+
 #animatedModal {
     padding: 20px 60px;
 }
@@ -527,9 +537,14 @@ header {
     border-radius: 5px;
 }
 
+#my_result {
+    width: 300px;
+    height: 220px;
+}
+
 #my_result img {
-    width: 183px;
-    height: 140px;
+    width: 300px;
+    height: 220px;
 }
 
 .loader,

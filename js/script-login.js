@@ -88,6 +88,22 @@ $(function () {
   }
 
   /*-----------------------------------
+  *   HELPERS
+  *-----------------------------------*/
+  function getBase64Image(img) {
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+
+    var dataURL = canvas.toDataURL("image/png");
+
+    return dataURL;
+  }
+
+  /*-----------------------------------
   *   LOAD THE WEIGHTS
   *-----------------------------------*/
   faceapi.nets.ssdMobilenetv1.loadFromUri('../weights').then(function(modelLoadRes) {
@@ -113,31 +129,79 @@ $(function () {
     $('#processing').show();
     var savedImage = document.getElementById('my_result').firstChild
     faceapi.detectAllFaces(savedImage).withFaceLandmarks().withFaceDescriptors().then(function(res) {
-      const labeledDescriptors = Object.values(storageKeys)
-      .filter(function(storageKey) {
-        storageKey = JSON.parse(storageKey);
-        if (storageKey.hasOwnProperty('username') && storageKey.hasOwnProperty('data')) {
-          return true;
+      if (res.length > 0) {
+        var labelledStorageKeys = Object.values(storageKeys)
+        // filter the storage and take only faceID.js related objects
+        .filter(function(storageKey) {
+          storageKey = JSON.parse(storageKey);
+          if (storageKey.hasOwnProperty('username') && storageKey.hasOwnProperty('data')) {
+            return true;
+          }
+        })
+        .map(function(storageKey) {
+          return JSON.parse(storageKey);
+        });
+
+        // get all objects and map them into descriptors
+        var labelledDescriptors = labelledStorageKeys
+        .map(function(storageKey) {
+          var descriptor = new Float32Array(Object.values(storageKey['data'][0]['descriptor']));
+          return new faceapi.LabeledFaceDescriptors(
+            storageKey['username'],
+            [descriptor]
+          );
+        });
+        console.log('labelledStorageKeys', labelledStorageKeys)
+        // LEVEL 1 - find the best match
+        var faceMatcher = new faceapi.FaceMatcher(labelledDescriptors)
+        
+        var bestMatch = faceMatcher.findBestMatch(res[0]['descriptor'])
+
+        // LEVEL 2 - process the best match through SSIM
+        var bestMatchLabel = bestMatch['label'];
+        var bestMatchedDescriptor = labelledStorageKeys.find(function(labelledStorageKey) {
+          return labelledStorageKey['username'] === bestMatchLabel
+        })
+        console.log('savedImage', savedImage)
+        if (savedImage) {
+          var simiScore = simi.compare(savedImage, bestMatchedDescriptor.img);
+          if (simiScore > 0.010) {
+            $('#processing').hide();
+            $('#your-username').show();
+            $('#your-username-header').show();
+            $('#your-username-text').text(bestMatch['label'] + '!');
+          } else {
+            $('#processing').hide();
+            $('#your-username').show();
+            $('#your-username-header').hide();
+            $('#your-username-undertext').hide();
+            $('#your-username-text').text(`We were not able to find a match, 
+            please try again or register with a better picture of yourself.`);
+          }
+        } else {
+          $('#processing').hide();
+          $('#your-username').show();
+          $('#your-username-header').hide();
+          $('#your-username-undertext').hide();
+          $('#your-username-text').text(`We were not able to find a match, 
+          please try again or register with a better picture of yourself.`);
         }
-      })
-      .map(function(storageKey) {
-        storageKey = JSON.parse(storageKey);
-        var descriptor = new Float32Array(Object.values(storageKey['data'][0]['descriptor']));
-        return new faceapi.LabeledFaceDescriptors(
-          storageKey['username'],
-          [descriptor]
-        );
-      });
-            
-      var faceMatcher = new faceapi.FaceMatcher(labeledDescriptors)
-      console.log('faceMatcher', faceMatcher)
-      var bestMatch = faceMatcher.findBestMatch(res[0]['descriptor'])
 
-
-      console.log(bestMatch)
-      $('#processing').hide();
-      $('#your-username').show();
-      $('#your-username-text').text(bestMatch['label'] + '!');
+        console.log('simiScore', simiScore)
+        console.log(bestMatch)
+        $('#processing').hide();
+        $('#your-username').show();
+        $('#your-username-header').show();
+        $('#your-username-text').text(bestMatch['label'] + '!');
+      } else {
+        $('#processing').hide();
+        $('#your-username').show();
+        $('#your-username-header').hide();
+        $('#your-username-undertext').hide();
+        $('#your-username-text').text(`We were not able to find a match, 
+        please try again or register with a better picture of yourself.`);
+      }
+      
     });
   });
   

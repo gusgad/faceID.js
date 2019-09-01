@@ -41,7 +41,7 @@
                 <ul class="navbar-nav ml-auto">
                   <li class="nav-item"> <a class="nav-link" href="../index.html">HOME <span
                         class="sr-only">(current)</span></a> </li>
-                  <li class="nav-item"> <a class="nav-link active">DEMO 
+                  <li class="nav-item"> <a class="nav-link" href="./demo.html">DEMO 
                     <span class="sr-only">(current)</span></a> </li>
                   <li class="nav-item"> <a class="nav-link" href="https://github.com/gusgad/faceID.js"
                       target="_blank">GITHUB</a> </li>
@@ -72,15 +72,16 @@
       </div>
     </div>
     <!-- END -- PROCESSING -->
+    <img id="bestMatch" src="">
 
     <!-- SUCCESS -->
     <div class="section pt-0" id="your-username">
       <div class="container">
         <div class="section-title">
-          <h3>Your username is found,</h3>
+          <h3 id="your-username-header">Your username is found,</h3>
           <h3 id="your-username-text"></h3>
         </div>
-        <p style="text-align: center" class="light-font mb-1">You can now use it with your password in order to log in.</p>
+        <p id="your-username-undertext" style="text-align: center" class="light-font mb-1">You can now use it with your password in order to log in.</p>
       </div>
     </div>
     <!-- END -- PROCESSING -->
@@ -96,8 +97,9 @@
       integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="https://bundle.run/pixelmatch@5.0.2"></script>
+    <script src="https://unpkg.com/ssim.js@3.0.0/dist/ssim.web.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
+    <script src="../js/simi.js"></script>
     <script src="../js/face-api.min.js"></script>
     <!-- Custom JS -->
     <script src="../js/script-login.js"></script>

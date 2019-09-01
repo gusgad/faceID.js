@@ -1,9 +1,14 @@
 $(function () {
   "use strict";
 
+  /*-----------------------------------
+   * DEFAULT STATES
+   *-----------------------------------*/
   $('.associated-photo').hide();
   $('#processing').hide();
   $('#success').hide();
+  $('.username-req').hide();
+  $('.photo-req').hide();
 
   /*-----------------------------------
    * FIXED  MENU - HEADER
@@ -105,8 +110,12 @@ $(function () {
         document.getElementById('animatedModal').remove();
         document.getElementById('body').style.overflow = 'auto';
         document.getElementsByTagName('html')[0].style.overflow = 'auto';
+        $('.photo-req').hide();
         $('.associated-photo').show();
-        $('#save-and-process').prop('disabled', false);
+        var savedImage = document.getElementById('my_result').firstChild;
+        if ($('#exampleInputUsername').val() && savedImage) {
+          $('#save-and-process').removeClass('disabled');
+        }
       });
     }
   });
@@ -131,6 +140,9 @@ $(function () {
   });
 });
 
+/*-----------------------------------
+*   HELPERS
+*-----------------------------------*/
 function makeid(length) {
   var result = '';
   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -141,19 +153,60 @@ function makeid(length) {
   return result;
 }
 
+function getBase64Image(img) {
+  var canvas = document.createElement("canvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+
+  var ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+  var dataURL = canvas.toDataURL("image/png");
+
+  return dataURL;
+}
+
+/*-----------------------------------
+* LISTEN TO USERNAME CHANGES TO VALIDATE IT
+*-----------------------------------*/
+$('#exampleInputUsername').on('change', function() {
+  var savedImage = document.getElementById('my_result').firstChild;
+  if ($('#exampleInputUsername').val() && savedImage) {
+    $('#save-and-process').removeClass('disabled');
+  } else {
+    $('#save-and-process').addClass('disabled');
+  }
+});
+
  /*-----------------------------------
   * START PROCESSING AFTER SAVE
   *-----------------------------------*/
   $('#save-and-process').click(function() {
-    console.log('CLICK PROCESSING')
-    $('#processing').show();
     var savedImage = document.getElementById('my_result').firstChild
-    faceapi.detectAllFaces(savedImage).withFaceLandmarks().withFaceDescriptors().then(function(res) {
-      console.log(res)
-      sessionStorage.setItem('userID=' + makeid(5), JSON.stringify({username: $('#exampleInputEmail').val(), data: res}));
-      $('#processing').hide();
-      $('#success').show();
-    });
+    if ($('#exampleInputUsername').val() && savedImage) {
+      console.log('CLICK PROCESSING')
+      $('.username-req').hide();
+      $('.photo-req').hide();
+      $('#processing').show();
+      
+      faceapi.detectAllFaces(savedImage).withFaceLandmarks().withFaceDescriptors().then(function(res) {
+        console.log(res)
+        sessionStorage.setItem('userID=' + makeid(5), JSON.stringify(
+          {
+            username: $('#exampleInputUsername').val(),
+            img: getBase64Image(savedImage),
+            data: res}
+        ));
+        $('#processing').hide();
+        $('#success').show();
+      });
+    } else if (!$('#exampleInputUsername').val()) {
+      $('.username-req').show();
+      $('.photo-req').hide();
+    } else if (!$('#my_result').firstChild) {
+      $('.photo-req').show();
+      $('.username-req').hide();
+    }
   });
   
 });
