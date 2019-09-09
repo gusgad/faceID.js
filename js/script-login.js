@@ -178,7 +178,7 @@ $(function () {
             ssim(getBase64Image(savedImage), getBase64Image(bestImg))
             .then(function(out) {
               console.log('SSIM:', out.mssim);
-              if (out.mssim > 0.1) {
+              if (out.mssim > 0.010) {
                 console.log(bestMatch)
                 $('#processing').hide();
                 $('#your-username').show();
