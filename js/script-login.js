@@ -157,52 +157,66 @@ $(function () {
         
         var bestMatch = faceMatcher.findBestMatch(res[0]['descriptor'])
 
-        // LEVEL 2 - process the best match through SSIM
+        // LEVEL 2 - process the perceptual hash (http://www.hackerfactor.com/blog/index.php?/archives/432-Looks-Like-It.html)
         var bestMatchLabel = bestMatch['label'];
         var bestMatchedDescriptor = labelledStorageKeys.find(function(labelledStorageKey) {
           return labelledStorageKey['username'] === bestMatchLabel
         })
-        console.log('savedImage', savedImage)
         if (savedImage) {
           var simiScore = simi.compare(savedImage, bestMatchedDescriptor.img);
+          console.log('simiScore', simiScore)
           if (simiScore > 0.010) {
-            $('#processing').hide();
-            $('#your-username').show();
-            $('#your-username-header').show();
-            $('#your-username-text').text(bestMatch['label'] + '!');
+            savedImage.width = 300;
+            savedImage.height = 220;
+
+            var bestImg = new Image();
+            bestImg.src = bestMatchedDescriptor.img;
+            bestImg.width = 300;
+            bestImg.height = 220;
+
+            // LEVEL 3 - The Structural Similarity Index (SSIM)
+            ssim(getBase64Image(savedImage), getBase64Image(bestImg))
+            .then(function(out) {
+              console.log('SSIM:', out.mssim);
+              if (out.mssim > 0.1) {
+                console.log(bestMatch)
+                $('#processing').hide();
+                $('#your-username').show();
+                $('#your-username-header').show();
+                $('#your-username-text').text(bestMatch['label'] + '!');
+              } else {
+                hideOnError();
+                console.log('LEVEL 3 - not passed');
+              }
+            })
+            .catch(function(err) {
+              console.error('Error generating SSIM', err);
+              hideOnError();
+            });
+            
           } else {
-            $('#processing').hide();
-            $('#your-username').show();
-            $('#your-username-header').hide();
-            $('#your-username-undertext').hide();
-            $('#your-username-text').text(`We were not able to find a match, 
-            please try again or register with a better picture of yourself.`);
+            hideOnError();
+            console.log('LEVEL 2 - not passed');
           }
         } else {
-          $('#processing').hide();
-          $('#your-username').show();
-          $('#your-username-header').hide();
-          $('#your-username-undertext').hide();
-          $('#your-username-text').text(`We were not able to find a match, 
-          please try again or register with a better picture of yourself.`);
+          hideOnError();
+          console.log('LEVEL 1 - not passed');
         }
-
-        console.log('simiScore', simiScore)
-        console.log(bestMatch)
-        $('#processing').hide();
-        $('#your-username').show();
-        $('#your-username-header').show();
-        $('#your-username-text').text(bestMatch['label'] + '!');
       } else {
-        $('#processing').hide();
-        $('#your-username').show();
-        $('#your-username-header').hide();
-        $('#your-username-undertext').hide();
-        $('#your-username-text').text(`We were not able to find a match, 
-        please try again or register with a better picture of yourself.`);
+        hideOnError();
       }
       
     });
   });
+
+  function hideOnError() {
+    $('#processing').hide();
+    $('#your-username').show();
+    $('#your-username-header').hide();
+    $('#your-username-undertext').hide();
+    $('#your-username-text').text(`We were not able to find a match, 
+    please try again or register with a better picture of yourself.`);
+    return false;
+  };
   
 });

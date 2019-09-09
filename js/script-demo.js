@@ -121,15 +121,6 @@ $(function () {
   });
 
   /*-----------------------------------
-  * INITIALIZE THE FILE UPLOADER
-  *-----------------------------------*/
-  FilePond.parse(document.body);
-
-  $('#uploadPhoto').on('FilePond:addfile', function (e) {
-    console.log('file added event', e);
-  });
-
-  /*-----------------------------------
   *   LOAD THE WEIGHTS
   *-----------------------------------*/
  faceapi.nets.ssdMobilenetv1.loadFromUri('../weights').then(function(modelLoadRes) {

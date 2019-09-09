@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css">
-    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
     <!-- Themify Icons -->
     <link rel="stylesheet" href="../css/themify-icons.css">
     <!-- Main css -->
@@ -84,9 +83,7 @@
             <h4 class="mb-0">2. Photo</h4>
             <p class="light-font mb-1">Take a snapshot or upload a photo that will be associated with your username upon logging in.</p>
             <!--Call your modal-->
-            <a id="openCameraModal" href="#animatedModal" class="btn btn-primary  mb-3" role="button" aria-pressed="true">Take a snapshot (preferred)</a>
-            <!-- We'll transform this input into a pond -->
-            <input id="uploadPhoto" type="file" class="filepond">
+            <a id="openCameraModal" href="#animatedModal" class="btn btn-primary mb-3" role="button" aria-pressed="true">Take a snapshot</a>
             <span class="photo-req">Photo is required.</span>
             <p class="light-font mb-1 associated-photo">Photo to be associated:</p>
             <div id="my_result"></div>
@@ -139,7 +136,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
-    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
     <script src="../js/animatedModal.min.js"></script>
     <script src="../js/face-api.min.js"></script>
     <!-- Custom JS -->
