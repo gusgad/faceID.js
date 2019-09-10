@@ -175,13 +175,12 @@ $('#exampleInputUsername').on('change', function() {
   $('#save-and-process').click(function() {
     var savedImage = document.getElementById('my_result').firstChild
     if ($('#exampleInputUsername').val() && savedImage) {
-      console.log('CLICK PROCESSING')
       $('.username-req').hide();
       $('.photo-req').hide();
       $('#processing').show();
       
       faceapi.detectAllFaces(savedImage).withFaceLandmarks().withFaceDescriptors().then(function(res) {
-        console.log(res)
+        // save username hash, image and face landmarks from detections to sessionStorage to serve as a database
         sessionStorage.setItem('userID=' + makeid(5), JSON.stringify(
           {
             username: $('#exampleInputUsername').val(),

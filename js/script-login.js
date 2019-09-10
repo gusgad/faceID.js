@@ -1,9 +1,12 @@
 $(function () {
   "use strict";
 
+  /*-----------------------------------
+   * DEFAULT STATES
+   *-----------------------------------*/
   $('#processing').hide();
   $('#your-username').hide();
-
+  $('#reload').hide()
 
   /*-----------------------------------
    * NAVBAR CLOSE ON CLICK
@@ -12,7 +15,7 @@ $(function () {
   $('.navbar-nav > li:not(.dropdown) > a').on('click', function () {
     $('.navbar-collapse').collapse('hide');
   });
-  /* 
+  /*-----------------
    * NAVBAR TOGGLE BG
    *-----------------*/
   var siteNav = $('#navbar');
@@ -103,6 +106,17 @@ $(function () {
     return dataURL;
   }
 
+  // reloads the page when "try again" is clicked
+  $('#reload').on('click', function() {
+    location.reload();
+  });
+
+  // get all elements from sessionStorage aka our database
+  function allStorage() {
+    var values = Object.assign({}, sessionStorage)
+    return values;
+  };
+
   /*-----------------------------------
   *   LOAD THE WEIGHTS
   *-----------------------------------*/
@@ -114,11 +128,6 @@ $(function () {
     });
   });
 
-  function allStorage() {
-    var values = Object.assign({}, sessionStorage)
-    
-    return values;
-  };
 
   /*-----------------------------------
   * START PROCESSING AFTER SAVE
@@ -142,7 +151,7 @@ $(function () {
           return JSON.parse(storageKey);
         });
 
-        // get all objects and map them into descriptors
+        // get all objects that were in the sessionStorage and map them into descriptors
         var labelledDescriptors = labelledStorageKeys
         .map(function(storageKey) {
           var descriptor = new Float32Array(Object.values(storageKey['data'][0]['descriptor']));
@@ -151,10 +160,9 @@ $(function () {
             [descriptor]
           );
         });
-        console.log('labelledStorageKeys', labelledStorageKeys)
-        // LEVEL 1 - find the best match
+
+        // LEVEL 1 - find the best match by comparing current landmarks to the ones from sessionStorage
         var faceMatcher = new faceapi.FaceMatcher(labelledDescriptors)
-        
         var bestMatch = faceMatcher.findBestMatch(res[0]['descriptor'])
 
         // LEVEL 2 - process the perceptual hash (http://www.hackerfactor.com/blog/index.php?/archives/432-Looks-Like-It.html)
@@ -165,6 +173,7 @@ $(function () {
         if (savedImage) {
           var simiScore = simi.compare(savedImage, bestMatchedDescriptor.img);
           console.log('simiScore', simiScore)
+          // if the score is high enough, we can proceed
           if (simiScore > 0.010) {
             savedImage.width = 300;
             savedImage.height = 220;
@@ -184,6 +193,8 @@ $(function () {
                 $('#your-username').show();
                 $('#your-username-header').show();
                 $('#your-username-text').text(bestMatch['label'] + '!');
+                $('#take-snapshot').hide();
+                $('#reload').show();
               } else {
                 hideOnError();
                 console.log('LEVEL 3 - not passed');
@@ -216,6 +227,8 @@ $(function () {
     $('#your-username-undertext').hide();
     $('#your-username-text').text(`We were not able to find a match, 
     please try again or register with a better picture of yourself.`);
+    $('#take-snapshot').hide();
+    $('#reload').show();
     return false;
   };
   
