@@ -83,6 +83,7 @@
             <p class="light-font mb-1">Take a snapshot or upload a photo that will be associated with your username upon logging in.</p>
             <!--Call your modal-->
             <a id="openCameraModal" href="#animatedModal" class="btn btn-primary mb-3" role="button" aria-pressed="true">Take a snapshot</a>
+            <a id="retake" class="btn btn-primary mb-3" role="button" aria-pressed="true">Retake</a>
             <span class="photo-req">Photo is required.</span>
             <p class="light-font mb-1 associated-photo">Photo to be associated:</p>
             <div id="my_result"></div>
@@ -119,6 +120,14 @@
           <h3>Success</h3>
         </div>
         <p style="text-align: center" class="light-font mb-1">Please, head to the <a href="./login.html">Login</a> page to authenticate with your photo! &#x1F609;</p>
+      </div>
+    </div>
+
+    <div class="section pt-0" id="fail">
+      <div class="container">
+        <div class="section-title">
+          <h3>Your face could not be registered. Please, try again with a clearer picture of your face, close to the camera.</h3>
+        </div>
       </div>
     </div>
     <!-- END -- PROCESSING -->

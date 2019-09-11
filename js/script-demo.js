@@ -9,6 +9,8 @@ $(function () {
   $('#success').hide();
   $('.username-req').hide();
   $('.photo-req').hide();
+  $('#retake').hide();
+  $('#fail').hide();
 
   /*-----------------------------------
    * FIXED  MENU - HEADER
@@ -112,7 +114,9 @@ $(function () {
         document.getElementsByTagName('html')[0].style.overflow = 'auto';
         $('.photo-req').hide();
         $('.associated-photo').show();
+        $('#openCameraModal').hide();
         var savedImage = document.getElementById('my_result').firstChild;
+        $('#retake').show();
         if ($('#exampleInputUsername').val() && savedImage) {
           $('#save-and-process').removeClass('disabled');
         }
@@ -157,10 +161,14 @@ function getBase64Image(img) {
   return dataURL;
 }
 
+$('#retake').on('click', function() {
+  location.reload();
+});
+
 /*-----------------------------------
 * LISTEN TO USERNAME CHANGES TO VALIDATE IT
 *-----------------------------------*/
-$('#exampleInputUsername').on('change', function() {
+$('#exampleInputUsername').on('keyup', function() {
   var savedImage = document.getElementById('my_result').firstChild;
   if ($('#exampleInputUsername').val() && savedImage) {
     $('#save-and-process').removeClass('disabled');
@@ -173,22 +181,31 @@ $('#exampleInputUsername').on('change', function() {
   * START PROCESSING AFTER SAVE
   *-----------------------------------*/
   $('#save-and-process').click(function() {
+    
     var savedImage = document.getElementById('my_result').firstChild
     if ($('#exampleInputUsername').val() && savedImage) {
+      $('html,body').animate({ scrollTop: document.body.scrollHeight }, 800);
       $('.username-req').hide();
       $('.photo-req').hide();
       $('#processing').show();
       
       faceapi.detectAllFaces(savedImage).withFaceLandmarks().withFaceDescriptors().then(function(res) {
-        // save username hash, image and face landmarks from detections to sessionStorage to serve as a database
-        sessionStorage.setItem('userID=' + makeid(5), JSON.stringify(
-          {
-            username: $('#exampleInputUsername').val(),
-            img: getBase64Image(savedImage),
-            data: res}
-        ));
-        $('#processing').hide();
-        $('#success').show();
+        if (res.length === 0) {
+          $('#fail').show();
+          $('#processing').hide();
+          $('#success').hide();
+        } else {
+          // save username hash, image and face landmarks from detections to sessionStorage to serve as a database
+          sessionStorage.setItem('userID=' + makeid(5), JSON.stringify(
+            {
+              username: $('#exampleInputUsername').val(),
+              img: getBase64Image(savedImage),
+              data: res}
+          ));
+          $('#processing').hide();
+          $('#success').show();
+        }
+        
       });
     } else if (!$('#exampleInputUsername').val()) {
       $('.username-req').show();

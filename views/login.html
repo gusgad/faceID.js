@@ -55,7 +55,7 @@
     <div class="camera-window">
       <div id="my_camera"></div>
       <a id="take-snapshot" class="btn btn-primary" role="button" aria-pressed="true">Find my login username</a>
-      <a id="reload" class="btn btn-primary" role="button" aria-pressed="true">Try again</a>
+      <a class="btn btn-primary reload" role="button" aria-pressed="true">Try again</a>
       <div id="my_result"></div>
     </div>
 
@@ -76,12 +76,14 @@
 
     <!-- SUCCESS -->
     <div class="section pt-0" id="your-username">
-      <div class="container">
+      <div class="container" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
         <div class="section-title">
           <h3 id="your-username-header">Your username is found,</h3>
           <h3 id="your-username-text"></h3>
         </div>
         <p id="your-username-undertext" style="text-align: center" class="light-font mb-1">You can now use it with your password in order to log in.</p>
+        <p style="text-align: center" class="light-font mb-1">or just</p>
+        <a class="btn btn-primary reload" role="button" aria-pressed="true">Try again</a>
       </div>
     </div>
     <!-- END -- PROCESSING -->

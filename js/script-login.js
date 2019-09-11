@@ -6,7 +6,7 @@ $(function () {
    *-----------------------------------*/
   $('#processing').hide();
   $('#your-username').hide();
-  $('#reload').hide()
+  $('.reload').hide()
 
   /*-----------------------------------
    * NAVBAR CLOSE ON CLICK
@@ -107,7 +107,7 @@ $(function () {
   }
 
   // reloads the page when "try again" is clicked
-  $('#reload').on('click', function() {
+  $('.reload').on('click', function() {
     location.reload();
   });
 
@@ -133,6 +133,7 @@ $(function () {
   * START PROCESSING AFTER SAVE
   *-----------------------------------*/
   $('#take-snapshot').click(function() {
+    $('html,body').animate({ scrollTop: document.body.scrollHeight }, 800);
     var storageKeys = allStorage();
 
     $('#processing').show();
@@ -187,14 +188,14 @@ $(function () {
             ssim(getBase64Image(savedImage), getBase64Image(bestImg))
             .then(function(out) {
               console.log('SSIM:', out.mssim);
-              if (out.mssim > 0.010) {
+              if (out.mssim > 0.00010) {
                 console.log(bestMatch)
                 $('#processing').hide();
                 $('#your-username').show();
                 $('#your-username-header').show();
                 $('#your-username-text').text(bestMatch['label'] + '!');
                 $('#take-snapshot').hide();
-                $('#reload').show();
+                $('.reload').show();
               } else {
                 hideOnError();
                 console.log('LEVEL 3 - not passed');
@@ -228,7 +229,7 @@ $(function () {
     $('#your-username-text').text(`We were not able to find a match, 
     please try again or register with a better picture of yourself.`);
     $('#take-snapshot').hide();
-    $('#reload').show();
+    $('.reload').show();
     return false;
   };
   
