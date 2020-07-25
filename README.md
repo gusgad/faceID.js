@@ -3,6 +3,7 @@
 ![faceID.js logo](./images/logo.png)
 
 [Demo](https://faceid-37c3b.firebaseapp.com/)
+[Medium article](https://medium.com/@gusgadirov/bringing-face-id-authentication-to-the-web-11677cf77c2f)
 
 The AI powered faceID.js brings your website authentication system to the next level and lets you manipulate user accounts by associating facial descriptors with usernames. The purpose of this repository and the [webapp](https://faceid-37c3b.firebaseapp.com/) (https://faceid-37c3b.firebaseapp.com/) is to demonstrate the faceID functionality by taking you through the user registration process and later logging in with the photo of your face.
 
